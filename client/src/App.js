@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
 import config from './config.js';
-
+const socket = socketIOClient(config.socketBaseUrl);
 
 class App extends Component {
 
@@ -56,7 +56,7 @@ class App extends Component {
 
   setItem = (item) => {
     if (this.state.items.indexOf(item) === -1) {
-      this.state.items.push(item.name);
+      this.state.items.push(item);
       this.setState({items: this.state.items});
     }  
   }
@@ -70,8 +70,8 @@ class App extends Component {
 
     const divToRender= this.state.items.map((item) => {
       return (
-        <div>
-          <li id={item._id}>{item.name}</li>
+        <div id={item._id}>
+          <li>{item.name}</li>
             <button onClick={(e) => {e.preventDefault(); this.handleDelete(item)}}>Delete</button>
         </div>  
       );
