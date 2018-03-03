@@ -1,11 +1,12 @@
 
 const TodoItem = require('../models/TodoItem.js');
 
-//Get all todo items from the db.
+//End point to post an item
 module.exports = async (req, res) => {
-	const todoItems = await Todo.find({})
-	TodoItem.find({items: todoItems})
+	const { name } = req.body;
+	const todoItem = new TodoItem({name});
+	const item = await todoItem.save();
 	res.send({
-    	items: todoItems
+    	item: item
     });
 };
