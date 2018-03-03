@@ -32,10 +32,15 @@
    "socket.io-client" is the npm module used on the client side.
    
  # Possible Improvements
-    Add input param validation and error handling on the rest APIs.
+    Add input param validation on the rest APIs.
+    Better error handling across the board.
+    Add authentication to mongodb.
     
-   
+# Deployment steps for localhost
+    The steps are the same as that for prod, except you should be working out of the `local` branch to see this app in action on the localhost.
+    
 # Deployment steps for Prod
+Make sure you're on the master branch.
 
 Install npm
 
