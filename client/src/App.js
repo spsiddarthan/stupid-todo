@@ -1,7 +1,9 @@
 // import packages
 import React, { Component } from 'react';
 import socketIOClient from 'socket.io-client';
+import _ from "lodash";
 import config from './config.js';
+import './App.css';
 const socket = socketIOClient(config.socketBaseUrl);
 
 class App extends Component {
@@ -60,20 +62,35 @@ class App extends Component {
       this.setState({items: this.state.items});
     }  
   }
+
+  removeItem = (itemId) => {
+    this.state.items = _.filter(this.state.items,
+      (item) => item._id !== itemId
+    );  
+    
+    this.setState({items: this.state.items});
+  }
  
   render() {
     socket.on('item added', (item) => {
-      console.log(item);
       this.setItem(item);
     })
 
+    socket.on('item removed', (item) => {
+      console.log(item);
+      this.removeItem(item);
+    })
 
     const divToRender= this.state.items.map((item) => {
       return (
-        <div id={item._id}>
-          <li>{item.name}</li>
-            <button onClick={(e) => {e.preventDefault(); this.handleDelete(item)}}>Delete</button>
-        </div>  
+        <table>
+          <tr id={item._id}>
+            <th>{item.name}</th>
+            <th>           
+               <button onClick={(e) => {e.preventDefault(); this.handleDelete(item)}}>Delete</button>
+            </th>
+          </tr>
+        </table>  
       );
     });
     const parentDiv =  <ul>{divToRender}</ul>;
@@ -81,12 +98,14 @@ class App extends Component {
 
     return (
       <div>
-          <form onSubmit={this.handleSubmit}>
+          Add more items to your todo list!
+          <form onSubmit={this.handleSubmit} className='form'>
             <label>
-              Item:
+              Item:&nbsp;
               <input type="text" value={this.state.value} onChange={this.handleChange} />
+              &nbsp;  
             </label>
-            <input type="submit" value="Submit" disabled={this.state.value===''}/>
+            <input type="submit" value="Add" disabled={this.state.value===''}/>
           </form>
           {parentDiv}
       </div>
