@@ -98,7 +98,11 @@ class App extends Component {
 
     return (
       <div>
-          Add more items to your todo list!
+          {this.state.items.length === 0 ?
+            'There are no items in your list! Add now'
+            :
+            'Add more items to your todo list!'
+          }
           <form onSubmit={this.handleSubmit} className='form'>
             <label>
               Item:&nbsp;
