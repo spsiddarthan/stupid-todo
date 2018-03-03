@@ -8,7 +8,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {value: '', endpoint: "http://localhost:4001", items: []};
+    this.state = {value: '', endpoint: config.socketBaseUrl, items: []};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,8 +32,6 @@ class App extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const socket = socketIOClient(this.state.endpoint);
-    socket.emit('item added', this.state.value) 
 
     await fetch(config.apiBaseUrl + '/todo', {
       method: 'post',
@@ -58,16 +56,14 @@ class App extends Component {
 
   setItem = (item) => {
     if (this.state.items.indexOf(item) === -1) {
-      this.state.items.push(item);
+      this.state.items.push(item.name);
       this.setState({items: this.state.items});
     }  
   }
  
   render() {
-    const socket = socketIOClient(this.state.endpoint);
     socket.on('item added', (item) => {
       console.log(item);
-          console.log('length of items is ', this.state.items.length);
       this.setItem(item);
     })
 
@@ -75,7 +71,7 @@ class App extends Component {
     const divToRender= this.state.items.map((item) => {
       return (
         <div>
-          <li>{item.name}</li>
+          <li id={item._id}>{item.name}</li>
             <button onClick={(e) => {e.preventDefault(); this.handleDelete(item)}}>Delete</button>
         </div>  
       );
