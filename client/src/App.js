@@ -32,9 +32,7 @@ class App extends Component {
     this.setState({value: event.target.value});
   }
 
-  async handleSubmit(event) {
-    event.preventDefault();
-
+  async handleSubmit() {
     await fetch(config.apiBaseUrl + '/todo', {
       method: 'post',
       headers: {
@@ -77,42 +75,36 @@ class App extends Component {
     })
 
     socket.on('item removed', (item) => {
-      console.log(item);
       this.removeItem(item);
     })
 
     const divToRender= this.state.items.map((item) => {
       return (
-        <table>
-          <tr id={item._id}>
-            <th>{item.name}</th>
-            <th>           
-               <button onClick={(e) => {e.preventDefault(); this.handleDelete(item)}}>Delete</button>
-            </th>
-          </tr>
-        </table>  
+         <li>
+            <input type="checkbox" onClick={(e) => {e.preventDefault(); this.handleDelete(item)}}/>
+            <label>{item.name}</label>
+         </li> 
       );
     });
-    const parentDiv =  <ul>{divToRender}</ul>;
-
 
     return (
       <div>
-          {this.state.items.length === 0 ?
-            'There are no items in your list! Add now'
-            :
-            'Add more items to your todo list!'
-          }
           <form onSubmit={this.handleSubmit} className='form'>
-            <label>
-              Item:&nbsp;
-              <input type="text" value={this.state.value} onChange={this.handleChange} />
-              &nbsp;  
-            </label>
-            <input type="submit" value="Add" disabled={this.state.value===''}/>
+              <label>
+                <input type="text" value={this.state.value} onChange={this.handleChange} placeholder='Add more todos!' />
+              </label>
+              <input type="submit" value="Add" disabled={this.state.value===''}/>
           </form>
-          {parentDiv}
-      </div>
+          <div className="wrap">
+            <div className="header"><span>Todo List</span>
+            </div>
+            <div className="wrap-list">
+                <ol className="list">
+                  {divToRender}
+                </ol>
+            </div>
+          </div>
+      </div>       
     )
   }  
 }
