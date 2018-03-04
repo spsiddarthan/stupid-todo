@@ -1,19 +1,20 @@
 # Todo App to show the functioning of web sockets. 
- The problem statement is to have a form on the UI and submit button along side it. When the submit button is clicked, the todo 
+ The problem statement is to have a form on the UI and submit button alongside it. When the submit button is clicked, the todo 
  item gets added to the list of items shown to you. If there are multiple browser windows open, all of them should display the 
  newly added item throught means of a web socket. 
  
  # Tech Stack and Folder Structure. 
-  The app's backend API's are written in Node 9.7.1 and express. The socket server is also written using node amd express.
+  The app can be divided internally into three parts: socket-server, rest api endpoints and the client. 
+  
+  The app's backend API's are written in Node 9.7.1 and express. The socket server is also written using node and express.
   The front end is written using ReactJS (a boiler plate called Create React App was used to create the client directory, it
   was heavily modified of course to suit this application).
   
   Everything under the api's directory refers to server side rest endpoint code. 
   Everything under the client directory is the client side react code. 
-  Everyrthing under the socket server  is the socket server code. 
+  Everything under the socket server is the socket server code. 
   
-  A digital ocean instance was booted up to serve as the DB store. The same instance is also used to host the app as a whole as
-  well and is available at http://159.89.175.10:3000
+  A digital ocean instance was booted up to serve as the DB store. The same instance is also used to host the app as a whole     as well and is available at http://159.89.175.10:3000
   
  # Workflow
    When the UI app loads, it makes an API call to the GET '/todos' end point to get a list of todos that already exist.
